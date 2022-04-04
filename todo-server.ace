@@ -1,0 +1,114 @@
+HttpServer C# NET6 EntityFramework
+
+AceGen.Todo
+
+
+
+
+ACE 
+	GetAllTodos<TodoList> 
+		GET "/todos/all"
+			queryParams categoryId
+		response todoList
+	
+	CreateTodo<Todo>
+		POST "/todos/create"
+		payload 
+			description
+			categoryId
+		on success (Todo.create) 
+	
+	CreateCategory<Category>
+		POST "/category/create"
+		payload categoryId
+		on success (Category.create) 
+	
+	ToggleTodo<TodoToggle> 
+		PUT "/todos/toggle" 
+		queryParams id
+		on success ( Todo.toggle )
+	
+	ToggleAll<ToggleAll>
+		PUT "/todos/toggle-all" 
+		queryParams categoryId
+		on success ( Todo.toggleAll )
+	
+	UpdateTodo<Todo>
+		PUT "/todos/update" 
+		payload id description  
+		on success (Todo.update)
+	
+	DeleteTodo<TodoId> 
+		DELETE "/todos/delete" 
+		queryParams id 
+		on success (Todo.delete)
+	
+	ClearDone<ClearDone> 
+		DELETE "/todos/clear-done" 
+		queryParams categoryId
+		on success (Todo.clearDone) 
+		
+views 
+	Todo {
+		create(Todo)
+		toggle(TodoToggle)
+		toggleAll(ToggleAll)
+		delete(TodoId)
+		update(Todo)
+		clearDone(ClearDone)
+	}
+	
+	Category {
+		create(Category)
+	}
+
+models 
+	persistent Todo {
+		Unique PrimaryKey NotNull String id
+		NotNull String description
+		NotNull Boolean done
+		DateTime createdDateTime
+		DateTime updatedDateTime
+		NotNull String categoryId references Category.categoryId
+	}
+	persistent Category {
+		Unique PrimaryKey NotNull String categoryId
+	}
+	
+	TodoList {
+		List Todo todoList
+		String categoryId
+	}
+	
+	TodoId {
+		NotNull String id
+	}
+
+	TodoToggle {
+		NotNull String id
+		NotNull Boolean done
+		Todo todoToBeToggled
+		DateTime updatedDateTime
+	}
+
+	ToggleAll {
+		NotNull Boolean done
+		List Todo todosToBeToggled
+		DateTime updatedDateTime
+		String categoryId
+	}
+	
+	ClearDone {
+		String categoryId
+	}
+	
+	Test {
+		Float testfloat
+		Integer integerTest
+		Long longTEst
+		Float floatTest
+		FormData formData
+	}
+	
+	
+	
